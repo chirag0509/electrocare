@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "899214926384",
+    "project_id": "electrocare0",
+    "storage_bucket": "electrocare0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899214926384:android:589c7d3abc9cb4dcde83f5",
+        "android_client_info": {
+          "package_name": "com.example.electrocare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "899214926384-3734qd712olqgm1jjneib1mfv409iica.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkAJZFw3H1B0bV3uCNR9eCBRH1zQFIcME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899214926384-3734qd712olqgm1jjneib1mfv409iica.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
