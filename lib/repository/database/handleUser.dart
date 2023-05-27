@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electrocare/repository/authentication/auth.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 import '../models/userModel.dart';
 
@@ -22,5 +23,13 @@ class HandleUser extends GetxController {
         .map((e) => UserModel.fromSnapshot(e))
         .singleWhere(
             (user) => user.email == Auth.instance.firebaseUser.value!.email));
+  }
+
+  Future<void> updateUser(UserModel user) async {
+    try {
+      await _db.collection("users").doc(user.email).update(user.toJson());
+    } catch (e) {
+      print(e);
+    }
   }
 }

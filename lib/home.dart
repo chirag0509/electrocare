@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
                   height: h * 0.22,
                 ),
                 Image.asset(
-                  'assets/images/logo.jpg',
+                  'assets/images/logo.png',
                   width: w * 0.65,
                 ),
                 Column(

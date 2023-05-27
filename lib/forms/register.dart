@@ -1,4 +1,3 @@
-
 import 'package:electrocare/forms/otp.dart';
 import 'package:electrocare/repository/authentication/auth.dart';
 import 'package:electrocare/repository/controller/colorController.dart';
@@ -28,7 +27,6 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
-
 
     return SafeArea(
         child: Scaffold(
@@ -100,7 +98,7 @@ class _RegisterState extends State<Register> {
                             borderSide: BorderSide(width: 1),
                             borderRadius: BorderRadius.circular(10))),
                     validator: (value) {
-                      if (value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter your name';
                       } else if (value.length < 3) {
                         return 'Please check the name you entered';
@@ -124,7 +122,7 @@ class _RegisterState extends State<Register> {
                             borderSide: BorderSide(width: 1),
                             borderRadius: BorderRadius.circular(10))),
                     validator: (value) {
-                      if (value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter your email';
                       } else if (!RegExp(fi.emailRegex).hasMatch(value)) {
                         return 'Please enter a valid email';
@@ -151,7 +149,7 @@ class _RegisterState extends State<Register> {
                             borderSide: BorderSide(width: 1),
                             borderRadius: BorderRadius.circular(10))),
                     validator: (value) {
-                      if (value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter your number';
                       } else if (value.length != 10) {
                         return 'Please enter a valid number';
@@ -193,7 +191,7 @@ class _RegisterState extends State<Register> {
                             borderSide: BorderSide(width: 1),
                             borderRadius: BorderRadius.circular(10))),
                     validator: (value) {
-                      if (value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter a password';
                       } else if (value.length < 6) {
                         return 'Password must be atleast of 6 characters';

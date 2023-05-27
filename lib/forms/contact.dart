@@ -74,7 +74,7 @@ class _ContactState extends State<Contact> {
                             borderSide: BorderSide(width: 1),
                             borderRadius: BorderRadius.circular(10))),
                     validator: (value) {
-                      if (value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter your name';
                       } else if (value.length < 3) {
                         return 'Please check the name you entered';
@@ -98,7 +98,7 @@ class _ContactState extends State<Contact> {
                             borderSide: BorderSide(width: 1),
                             borderRadius: BorderRadius.circular(10))),
                     validator: (value) {
-                      if (value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter your email';
                       } else if (!RegExp(fi.emailRegex).hasMatch(value)) {
                         return 'Please enter a valid email';
@@ -123,7 +123,7 @@ class _ContactState extends State<Contact> {
                             borderSide: BorderSide(width: 1),
                             borderRadius: BorderRadius.circular(10))),
                     validator: (value) {
-                      if (value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter a subject';
                       }
                       return null;
@@ -150,7 +150,7 @@ class _ContactState extends State<Contact> {
                             borderSide: BorderSide(width: 1),
                             borderRadius: BorderRadius.circular(10))),
                     validator: (value) {
-                      if (value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter your query';
                       }
                       return null;

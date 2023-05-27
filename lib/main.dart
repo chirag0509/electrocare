@@ -10,6 +10,7 @@ import 'package:electrocare/repository/database/firebase_options.dart';
 import 'package:electrocare/routes.dart';
 import 'package:electrocare/user/categories.dart';
 import 'package:electrocare/user/dashboard.dart';
+import 'package:electrocare/user/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: MyRoutes.forgetPsk, page: () => ForgetPsk()),
         GetPage(name: UserRoutes.dashboard, page: () => Dashboard()),
         GetPage(name: UserRoutes.categories, page: () => Categories()),
+        GetPage(name: UserRoutes.profile, page: () => Profile()),
       ],
     );
   }

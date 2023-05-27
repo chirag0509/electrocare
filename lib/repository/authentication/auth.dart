@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electrocare/repository/controller/formController.dart';
 import 'package:electrocare/repository/database/handleUser.dart';
@@ -133,8 +131,9 @@ class Auth extends GetxController {
             email: fi.email.text,
             phone: fi.phone.text,
             password: fi.password.text,
+            address: "",
             image:
-                "https://firebasestorage.googleapis.com/v0/b/electrocare1.appspot.com/o/avatar.png?alt=media&token=826932c8-f5a7-4959-a03a-18e0f5c958d9");
+                "https://firebasestorage.googleapis.com/v0/b/electrocare0.appspot.com/o/avatar.png?alt=media&token=6b719599-6477-41f8-9bf5-e2e381253e0f");
         await controller.createUser(user);
       }
       return true;

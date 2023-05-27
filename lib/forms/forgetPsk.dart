@@ -174,7 +174,7 @@ class _ForgetPskState extends State<ForgetPsk> {
                                       borderSide: BorderSide(width: 1),
                                       borderRadius: BorderRadius.circular(10))),
                               validator: (value) {
-                                if (value == null) {
+                                if (value!.isEmpty) {
                                   return 'Please enter a password';
                                 } else if (value.length < 6) {
                                   return 'Password must be atleast of 6 characters';
@@ -201,7 +201,7 @@ class _ForgetPskState extends State<ForgetPsk> {
                                       borderSide: BorderSide(width: 1),
                                       borderRadius: BorderRadius.circular(10))),
                               validator: (value) {
-                                if (value == null) {
+                                if (value!.isEmpty) {
                                   return 'Please enter a password';
                                 } else if (value.length < 6) {
                                   return 'Password must be atleast of 6 characters';
@@ -321,7 +321,7 @@ class _ForgetPskState extends State<ForgetPsk> {
                                         borderRadius:
                                             BorderRadius.circular(10))),
                                 validator: (value) {
-                                  if (value == null) {
+                                  if (value!.isEmpty) {
                                     return 'Please enter your email';
                                   } else if (!RegExp(fi.emailRegex)
                                       .hasMatch(value)) {

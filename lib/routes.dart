@@ -9,4 +9,5 @@ class MyRoutes {
 class UserRoutes {
   static String dashboard = '/dashboard';
   static String categories = '/categories';
+  static String profile = '/profile';
 }

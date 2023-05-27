@@ -1,4 +1,3 @@
-
 import 'package:electrocare/forms/otp.dart';
 import 'package:electrocare/repository/authentication/auth.dart';
 import 'package:electrocare/repository/controller/formController.dart';
@@ -16,7 +15,6 @@ class Phone extends StatefulWidget {
 }
 
 class _PhoneState extends State<Phone> {
-
   final fi = FormController.instance;
   final _formKey = GlobalKey<FormState>();
 
@@ -96,7 +94,7 @@ class _PhoneState extends State<Phone> {
                             borderSide: BorderSide(width: 1),
                             borderRadius: BorderRadius.circular(10))),
                     validator: (value) {
-                      if (value == null) {
+                      if (value!.isEmpty) {
                         return 'Please enter your number';
                       } else if (value.length != 10) {
                         return 'Please enter a valid number';
