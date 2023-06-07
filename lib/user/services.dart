@@ -114,7 +114,7 @@ class _ServicesState extends State<Services> {
                           DateTime dateTime = timestamp.toDate();
 
                           String formattedDate =
-                              DateFormat('dd MMM').format(dateTime);
+                              DateFormat('dd-MM-yyyy').format(dateTime);
 
                           String formattedTime =
                               DateFormat('HH:mm').format(dateTime);

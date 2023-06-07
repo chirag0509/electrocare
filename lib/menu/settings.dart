@@ -3,7 +3,6 @@ import 'package:electrocare/repository/models/userModel.dart';
 import 'package:electrocare/user/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import '../repository/controller/colorController.dart';
 import '../repository/database/handleUser.dart';
@@ -110,13 +109,9 @@ class _SettingsPageState extends State<SettingsPage> {
                             crossAxisSpacing: 10,
                             childAspectRatio: 1,
                             crossAxisCount: 2),
-                        itemCount: 6,
+                        itemCount: 2,
                         itemBuilder: (context, index) {
-                          String title = index == 0
-                              ? "Profile"
-                              : index == 1
-                                  ? "Services"
-                                  : "";
+                          String title = index == 0 ? "Profile" : "Services";
 
                           IconData icon = index == 0
                               ? Icons.person_outline
