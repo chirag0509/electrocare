@@ -111,7 +111,7 @@ class _OtpState extends State<Otp> {
                   onSubmit: (value) async {
                     otp = value;
                     await Auth.instance
-                        .verifyOTP(otp, widget.email, widget.password);
+                        .verifyOTP(otp, widget.email, widget.password, context);
                   },
                 ),
               ),

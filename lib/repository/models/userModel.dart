@@ -8,6 +8,7 @@ class UserModel {
   final String password;
   final String image;
   final String address;
+  final String terms;
 
   const UserModel({
     this.id,
@@ -17,6 +18,7 @@ class UserModel {
     required this.password,
     required this.image,
     required this.address,
+    required this.terms,
   });
 
   toJson() {
@@ -27,6 +29,7 @@ class UserModel {
       "password": password,
       "image": image,
       "address": address,
+      "terms": terms,
     };
   }
 
@@ -41,6 +44,7 @@ class UserModel {
       password: data["password"],
       image: data["image"],
       address: data["address"],
+      terms: data["terms"],
     );
   }
 }

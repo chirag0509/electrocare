@@ -160,7 +160,7 @@ class _LoginState extends State<Login> {
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
                         await Auth.instance.signInWithEmailAndPassword(
-                            fi.email.text, fi.password.text);
+                            fi.email.text, fi.password.text, context);
                       }
                     },
                     child: Container(
@@ -231,7 +231,7 @@ class _LoginState extends State<Login> {
                       ),
                       InkWell(
                         onTap: () async {
-                          await Auth.instance.signInWithGoogle();
+                          await Auth.instance.signInWithGoogle(context);
                         },
                         child: Container(
                             padding: EdgeInsets.symmetric(vertical: 10),

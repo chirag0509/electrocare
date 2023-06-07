@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electrocare/repository/controller/colorController.dart';
 import 'package:electrocare/repository/database/handleService.dart';
 import 'package:electrocare/repository/database/handleUser.dart';
@@ -6,6 +7,7 @@ import 'package:electrocare/repository/models/componentModel.dart';
 import 'package:electrocare/repository/models/serviceModel.dart';
 import 'package:electrocare/repository/models/userModel.dart';
 import 'package:electrocare/user/profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -49,12 +51,6 @@ class _ComponentDetailState extends State<ComponentDetail> {
           },
           icon: Icon(Icons.arrow_back_ios),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Icon(Icons.shopping_cart_outlined),
-          )
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -79,16 +75,17 @@ class _ComponentDetailState extends State<ComponentDetail> {
                       height: 20,
                     ),
                     Container(
-                        width: 250,
-                        height: 250,
+                        width: w * 0.56,
+                        height: w * 0.56,
                         child: CachedNetworkImage(
                             imageUrl: widget.component.image)),
                     SizedBox(
-                      height: 30,
+                      height: 40,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                        horizontal: 20,
+                      ),
                       child: Align(
                         alignment: Alignment.bottomLeft,
                         child: Container(
@@ -248,16 +245,42 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                   child: InkWell(
                                     onTap: () async {
                                       if (_formKey.currentState!.validate()) {
-                                        if (snapshot.data!.address != "") {
+                                        if (snapshot.data!.address != "" &&
+                                            FirebaseAuth.instance.currentUser!
+                                                .emailVerified) {
                                           final service = ServiceModel(
-                                              userName: snapshot.data!.name,
-                                              userAdd: snapshot.data!.address,
-                                              userPhone: snapshot.data!.phone,
-                                              appliance: widget.component.id,
-                                              model: model.text,
-                                              problem: problem.text);
+                                            userName: snapshot.data!.name,
+                                            userAdd: snapshot.data!.address,
+                                            userPhone: snapshot.data!.phone,
+                                            userEmail: FirebaseAuth
+                                                .instance.currentUser!.email
+                                                .toString(),
+                                            appliance: widget.component.id,
+                                            model: model.text,
+                                            problem: problem.text,
+                                            status: "pending",
+                                            time: Timestamp.now(),
+                                          );
                                           await serviceController
-                                              .createService(service);
+                                              .createService(service)
+                                              .then((_) {
+                                            model.clear();
+                                            problem.clear();
+                                            setState(() {
+                                              isChatOpen = false;
+                                              Get.showSnackbar(
+                                                GetSnackBar(
+                                                  message:
+                                                      "Problem registered successfully.",
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 35, 35, 35),
+                                                ),
+                                              );
+                                            });
+                                          });
                                         } else {
                                           Get.showSnackbar(GetSnackBar(
                                             message:

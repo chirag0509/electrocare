@@ -2,13 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:electrocare/components/drawer.dart';
 import 'package:electrocare/repository/controller/colorController.dart';
 import 'package:electrocare/repository/database/handleCategories.dart';
+import 'package:electrocare/repository/database/handleUser.dart';
 import 'package:electrocare/user/componentDetail.dart';
+import 'package:electrocare/user/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../repository/models/componentModel.dart';
+import '../repository/models/userModel.dart';
 
 class Categories extends StatefulWidget {
   const Categories({super.key});
@@ -21,6 +24,7 @@ class _CategoriesState extends State<Categories> {
   final color = ColorController.instance;
 
   final categoryController = Get.put(HandleCategories());
+  final userController = Get.put(HandleUser());
 
   bool list = false;
 
@@ -42,10 +46,28 @@ class _CategoriesState extends State<Categories> {
         elevation: 0,
         iconTheme: IconThemeData(color: color.black, size: w * 0.075),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Icon(Icons.shopping_cart_outlined),
-          )
+          StreamBuilder<UserModel>(
+              stream: userController.getUserDetails(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 15, top: 10),
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(() => Profile());
+                      },
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(snapshot.data!.image),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              })
         ],
       ),
       drawer: DrawerCom.instance.drawer,
@@ -300,8 +322,8 @@ class _CategoriesState extends State<Categories> {
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 15),
                                         child: Container(
-                                          width: 125,
-                                          height: 125,
+                                          width: w * 0.28,
+                                          height: w * 0.28,
                                           padding: EdgeInsets.all(20),
                                           decoration: BoxDecoration(
                                               borderRadius:

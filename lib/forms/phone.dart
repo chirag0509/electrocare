@@ -1,5 +1,6 @@
 import 'package:electrocare/forms/otp.dart';
 import 'package:electrocare/repository/authentication/auth.dart';
+import 'package:electrocare/repository/controller/colorController.dart';
 import 'package:electrocare/repository/controller/formController.dart';
 
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class Phone extends StatefulWidget {
 class _PhoneState extends State<Phone> {
   final fi = FormController.instance;
   final _formKey = GlobalKey<FormState>();
+  final color = ColorController.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class _PhoneState extends State<Phone> {
               },
               icon: Icon(
                 Icons.arrow_back_ios,
-                color: Colors.black,
+                color: color.black,
                 size: w * 0.08,
               )),
         ),
@@ -49,7 +51,7 @@ class _PhoneState extends State<Phone> {
               },
               icon: Icon(
                 Icons.support_agent,
-                color: Colors.black,
+                color: color.black,
                 size: w * 0.1,
               ),
             ),
@@ -70,7 +72,7 @@ class _PhoneState extends State<Phone> {
                     child: Text(
                       "Sign In with Phone",
                       style: TextStyle(
-                          color: Color(0xFF8F1EFF),
+                          color: color.primary,
                           fontWeight: FontWeight.w600,
                           fontSize: w * 0.1),
                     ),
@@ -123,7 +125,7 @@ class _PhoneState extends State<Phone> {
                         vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: Color(0xFF8F1EFF),
+                        color: color.black,
                         borderRadius: BorderRadius.circular(w * 1),
                       ),
                       child: Center(

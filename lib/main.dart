@@ -3,6 +3,9 @@ import 'package:electrocare/forms/forgetPsk.dart';
 import 'package:electrocare/forms/login.dart';
 import 'package:electrocare/forms/register.dart';
 import 'package:electrocare/home.dart';
+import 'package:electrocare/menu/settings.dart';
+import 'package:electrocare/menu/terms.dart';
+import 'package:electrocare/menu/userTerms.dart';
 import 'package:electrocare/repository/authentication/auth.dart';
 import 'package:electrocare/repository/controller/colorController.dart';
 import 'package:electrocare/repository/controller/formController.dart';
@@ -11,10 +14,12 @@ import 'package:electrocare/routes.dart';
 import 'package:electrocare/user/categories.dart';
 import 'package:electrocare/user/dashboard.dart';
 import 'package:electrocare/user/profile.dart';
+import 'package:electrocare/user/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'forms/phone.dart';
+import 'menu/about.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,6 +67,11 @@ class MyApp extends StatelessWidget {
         GetPage(name: UserRoutes.dashboard, page: () => Dashboard()),
         GetPage(name: UserRoutes.categories, page: () => Categories()),
         GetPage(name: UserRoutes.profile, page: () => Profile()),
+        GetPage(name: MenuRoutes.terms, page: () => Terms()),
+        GetPage(name: MenuRoutes.userTerms, page: () => UserTerms()),
+        GetPage(name: MenuRoutes.about, page: () => About()),
+        GetPage(name: MenuRoutes.settings, page: () => SettingsPage()),
+        GetPage(name: UserRoutes.services, page: () => Services()),
       ],
     );
   }

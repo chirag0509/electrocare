@@ -10,12 +10,32 @@ class HandleService extends GetxController {
 
   Future<void> createService(ServiceModel service) async {
     try {
-      await _db
-          .collection("services")
-          .doc(FirebaseAuth.instance.currentUser!.email)
-          .set(service.toJson());
+      await _db.collection("services").add(service.toJson());
     } catch (e) {
       print(e);
+    }
+  }
+
+  Stream<List<ServiceModel>> getServices(String status) {
+    if (status != "all") {
+      return _db
+          .collection("services")
+          .orderBy("time", descending: true)
+          .snapshots()
+          .map((event) => event.docs
+              .map((e) => ServiceModel.fromSnapshot(e))
+              .where((element) =>
+                  element.userEmail ==
+                      FirebaseAuth.instance.currentUser!.email &&
+                  element.status == status)
+              .toList());
+    } else {
+      return _db
+          .collection("services")
+          .orderBy("status", descending: true)
+          .snapshots()
+          .map((event) =>
+              event.docs.map((e) => ServiceModel.fromSnapshot(e)).toList());
     }
   }
 }

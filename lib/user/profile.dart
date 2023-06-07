@@ -185,6 +185,7 @@ class _ProfileState extends State<Profile> {
                                         phone: snapshot.data!.phone,
                                         password: snapshot.data!.password,
                                         image: snapshot.data!.image,
+                                        terms: snapshot.data!.terms,
                                         address: address.text);
                                     await userController.updateUser(user);
                                   }
@@ -230,7 +231,7 @@ class HalfCircleClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final path = Path();
-    path.moveTo(0, -size.height * 5);
+    path.moveTo(0, -size.height * 5.5);
     path.arcToPoint(
       Offset(size.width, size.height / 2),
       radius: Radius.circular(size.width / 2),

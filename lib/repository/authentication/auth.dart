@@ -43,9 +43,24 @@ class Auth extends GetxController {
     }
   }
 
-  Future<void> signInWithEmailAndPassword(String email, String password) async {
+  Future<void> signInWithEmailAndPassword(
+      String email, String password, BuildContext context) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+              child: Container(
+                  height: 100,
+                  width: 100,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: CircularProgressIndicator(),
+                  )),
+            );
+          });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Get.showSnackbar(
@@ -114,12 +129,27 @@ class Auth extends GetxController {
       );
   }
 
-  Future<bool> verifyOTP(String otp, String email, String password) async {
+  Future<bool> verifyOTP(
+      String otp, String email, String password, BuildContext context) async {
     try {
       final phoneAuthCredential = PhoneAuthProvider.credential(
           verificationId: this.verificationId.value, smsCode: otp);
       final userCredential =
           await _auth.signInWithCredential(phoneAuthCredential);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+              child: Container(
+                  height: 100,
+                  width: 100,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: CircularProgressIndicator(),
+                  )),
+            );
+          });
       if (email != '' && password != '') {
         final emailAuthCredential =
             EmailAuthProvider.credential(email: email, password: password);
@@ -131,6 +161,7 @@ class Auth extends GetxController {
             email: fi.email.text,
             phone: fi.phone.text,
             password: fi.password.text,
+            terms: "",
             address: "",
             image:
                 "https://firebasestorage.googleapis.com/v0/b/electrocare0.appspot.com/o/avatar.png?alt=media&token=6b719599-6477-41f8-9bf5-e2e381253e0f");
@@ -154,7 +185,7 @@ class Auth extends GetxController {
       ..currentUser!.sendEmailVerification();
   }
 
-  Future<void> signInWithGoogle() async {
+  Future<void> signInWithGoogle(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
@@ -172,6 +203,20 @@ class Auth extends GetxController {
               .doc(email)
               .get();
           if (userDoc.exists) {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return Center(
+                    child: Container(
+                        height: 100,
+                        width: 100,
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(30),
+                          child: CircularProgressIndicator(),
+                        )),
+                  );
+                });
             final password = userDoc.get('password');
             final emailAuthCredential =
                 EmailAuthProvider.credential(email: email, password: password);
@@ -180,6 +225,20 @@ class Auth extends GetxController {
           }
         } else {
           await _auth.signInWithCredential(credential);
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Center(
+                  child: Container(
+                      height: 100,
+                      width: 100,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: CircularProgressIndicator(),
+                      )),
+                );
+              });
         }
       } else {
         Get.showSnackbar(
@@ -191,6 +250,7 @@ class Auth extends GetxController {
         );
       }
     } catch (e) {
+      print(e);
       Get.showSnackbar(
         GetSnackBar(
           message: "Something went wrong.",

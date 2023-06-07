@@ -252,7 +252,7 @@ class _ForgetPskState extends State<ForgetPsk> {
                                     onSubmit: (value) async {
                                       otp = value;
                                       final check = await Auth.instance
-                                          .verifyOTP(otp, '', '');
+                                          .verifyOTP(otp, '', '',context);
                                       if (check) {
                                         setState(() {
                                           enableOtp = false;
@@ -338,7 +338,7 @@ class _ForgetPskState extends State<ForgetPsk> {
                       if (_formKey.currentState!.validate()) {
                         if (enableOtp) {
                           final check =
-                              await Auth.instance.verifyOTP(otp, '', '');
+                              await Auth.instance.verifyOTP(otp, '', '',context);
                           if (check) {
                             setState(() {
                               enableOtp = false;
