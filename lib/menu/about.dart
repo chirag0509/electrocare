@@ -20,16 +20,14 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
   }
 
   Future<void> _launchurlInsta() async {
-    Uri _url =
-        Uri.parse('https://instagram.com/scan_feast?igshid=ZDdkNTZiNTM=');
+    Uri _url = Uri.parse('https://instagram.com/');
     if (!await launchUrl(_url)) {
       throw Exception('Could not launch $_url');
     }
   }
 
   Future<void> _launchurlFacebook() async {
-    Uri _url = Uri.parse(
-        'https://www.facebook.com/profile.php?id=100090994873352&mibextid=ZbWKwL');
+    Uri _url = Uri.parse('https://www.facebook.com/');
     if (!await launchUrl(_url)) {
       throw Exception('Could not launch $_url');
     }
@@ -76,73 +74,85 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                 height: 30,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Image.asset(
                     "assets/images/logo.png",
-                    width: w * 0.4,
+                    width: w * 0.35,
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.45,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Our Story',
-                          style: TextStyle(
-                              fontSize: w * 0.045, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'At Scan Feast, we believe that food brings people together. That\'s why we\'re dedicated to serving delicious meals made from fresh, locally-sourced ingredients. Our chefs are passionate about creating dishes that are not only flavorful, but also healthy and sustainable.',
-                          style: TextStyle(fontSize: w * 0.04),
-                          textAlign: TextAlign.justify,
-                        ),
-                      ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Our Story',
+                            style: TextStyle(
+                                fontSize: w * 0.045,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "At ElectroCare, we understand the importance of your valuable electronic appliances and the inconvenience caused by their malfunctioning. That's why we've designed our app to provide a seamless and efficient repair process, making your life easier.",
+                            style: TextStyle(fontSize: w * 0.035),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 40),
               Text(
                 'Meet the Team',
                 style:
-                    TextStyle(fontSize: w * 0.05, fontWeight: FontWeight.bold),
+                    TextStyle(fontSize: w * 0.045, fontWeight: FontWeight.bold),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 20, top: 10),
+                padding: const EdgeInsets.only(left: 25, top: 10),
                 child: Text(
                   '- Pankaj Rawat',
                   style: TextStyle(
-                      fontSize: w * 0.04, fontWeight: FontWeight.bold),
+                      fontSize: w * 0.035, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 20, top: 10),
+                padding: const EdgeInsets.only(left: 25, top: 10),
                 child: Text(
                   '- Chirag Jathan',
                   style: TextStyle(
-                      fontSize: w * 0.04, fontWeight: FontWeight.bold),
+                      fontSize: w * 0.035, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 20, top: 10),
+                padding: const EdgeInsets.only(left: 25, top: 10),
                 child: Text(
                   '- Swastik Sahu',
                   style: TextStyle(
-                      fontSize: w * 0.04, fontWeight: FontWeight.bold),
+                      fontSize: w * 0.035, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 40),
+              Text(
+                "Here's what sets us apart:",
+                style:
+                    TextStyle(fontSize: w * 0.045, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  'We are a family-owned restaurant that has been serving our community for over 10 years. Our mission is to provide the highest quality food and service to ensure our customers have an enjoyable dining experience. '
-                  '\n\nCome and join us for a meal today!',
+                  'Expert Technicians: Our team of highly skilled and certified technicians are equipped with extensive knowledge and experience in repairing a wide range of electronic appliances. They undergo rigorous training to stay up-to-date with the latest industry advancements, ensuring that they can handle any repair job with precision and expertise.'
+                  '\n\nDoor-to-Door Convenience: Say goodbye to the hassle of transporting your damaged appliance to a repair shop. With our door-to-door service, all you need to do is schedule an appointment through the app, and our technician will arrive at your doorstep at your preferred time. We bring the repair shop to you, saving you time and effort.'
+                  '\n\nQuality Repairs: We are committed to providing top-notch repairs that stand the test of time. We use only genuine parts and high-quality tools to ensure that your appliance is restored to its optimal functionality. Our technicians employ meticulous attention to detail, leaving no room for compromise when it comes to quality.'
+                  '\n\nTransparent Pricing: We believe in transparency and fairness. Our app provides clear and upfront pricing, so you know exactly what to expect before scheduling a repair. There are no hidden costs or surprises along the way. Rest assured, you will receive exceptional service at a competitive price.'
+                  '\n\nExcellent Customer Support: Your satisfaction is our priority. Our dedicated customer support team is available to address any queries or concerns you may have throughout the repair process. We value your feedback and continuously strive to improve our services to exceed your expectations.'
+                  '\n\nChoose ElectroCare for all your electronic appliance repair needs and experience the convenience and reliability of our door-to-door service. Download our app today and let us take care of your repairs, so you can get back to enjoying your fully functional appliances without any worries.',
                   textAlign: TextAlign.justify,
                   style: TextStyle(
-                    fontSize: w * 0.04,
-                    color: Colors.grey[800],
+                    fontSize: w * 0.035,
                   ),
                 ),
               ),
@@ -221,7 +231,7 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                     Text(
                       'Location:',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: w * 0.045,
                         color: Colors.grey[800],
                         fontWeight: FontWeight.bold,
                       ),
@@ -230,7 +240,7 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                     Text(
                       '07, New Road, Mumbai',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: w * 0.035,
                         color: Colors.grey[800],
                       ),
                     ),
@@ -238,7 +248,7 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                     Text(
                       'Hours:',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: w * 0.045,
                         color: Colors.grey[800],
                         fontWeight: FontWeight.bold,
                       ),
@@ -247,7 +257,7 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                     Text(
                       'Mon-Fri: 11am - 9pm',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: w * 0.035,
                         fontWeight: FontWeight.w400,
                         color: Colors.grey[800],
                       ),

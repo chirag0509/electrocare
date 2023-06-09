@@ -249,16 +249,12 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                             FirebaseAuth.instance.currentUser!
                                                 .emailVerified) {
                                           final service = ServiceModel(
-                                            userName: snapshot.data!.name,
-                                            userAdd: snapshot.data!.address,
-                                            userPhone: snapshot.data!.phone,
-                                            userEmail: FirebaseAuth
-                                                .instance.currentUser!.email
-                                                .toString(),
                                             appliance: widget.component.id,
                                             model: model.text,
                                             problem: problem.text,
-                                            status: "pending",
+                                            serviceStatus: "pending",
+                                            charge: "",
+                                            paymentStatus: "",
                                             time: Timestamp.now(),
                                           );
                                           await serviceController

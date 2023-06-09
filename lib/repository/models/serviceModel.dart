@@ -2,39 +2,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ServiceModel {
   final String? id;
-  final String userName;
-  final String userAdd;
-  final String userPhone;
-  final String userEmail;
   final String appliance;
+  final String charge;
   final String model;
+  final String paymentStatus;
   final String problem;
-  final String status;
+  final String serviceStatus;
   final Timestamp time;
 
   const ServiceModel({
     this.id,
-    required this.userName,
-    required this.userAdd,
-    required this.userPhone,
-    required this.userEmail,
     required this.appliance,
+    required this.charge,
     required this.model,
+    required this.paymentStatus,
     required this.problem,
-    required this.status,
+    required this.serviceStatus,
     required this.time,
   });
 
   toJson() {
     return {
-      "userName": userName,
-      "userAdd": userAdd,
-      "userPhone": userPhone,
-      "userEmail": userEmail,
       "appliance": appliance,
+      "charge": charge,
       "model": model,
+      "paymentStatus": paymentStatus,
       "problem": problem,
-      "status": status,
+      "serviceStatus": serviceStatus,
       "time": time,
     };
   }
@@ -44,14 +38,12 @@ class ServiceModel {
     final data = document.data()!;
     return ServiceModel(
       id: document.id,
-      userName: data["userName"],
-      userAdd: data["userAdd"],
-      userPhone: data["userPhone"],
-      userEmail: data["userEmail"],
       appliance: data["appliance"],
+      charge: data["charge"],
       model: data["model"],
+      paymentStatus: data["paymentStatus"],
       problem: data["problem"],
-      status: data["status"],
+      serviceStatus: data["serviceStatus"],
       time: data["time"],
     );
   }
