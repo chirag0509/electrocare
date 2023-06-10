@@ -192,11 +192,47 @@ class _ServicesState extends State<Services> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
+                                              Text("Date :"),
+                                              Text(formattedDate),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 5, left: 10, right: 10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
                                               Text("Total charge :"),
                                               Text(
                                                   snapshot.data![index].charge),
                                             ],
                                           ),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: Text(
+                                              "Pay",
+                                              style:
+                                                  TextStyle(fontSize: w * 0.04),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
                                         ),
                                       ],
                                     ),

@@ -19,6 +19,10 @@ class _ProfileState extends State<Profile> {
   final _formKey = GlobalKey<FormState>();
   final userController = Get.put(HandleUser());
 
+  final address = TextEditingController();
+
+  bool isEditing = false;
+
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
@@ -52,8 +56,6 @@ class _ProfileState extends State<Profile> {
                 stream: userController.getUserDetails(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    final address =
-                        TextEditingController(text: snapshot.data!.address);
                     return Container(
                       width: w,
                       height: h * 0.89,
@@ -139,37 +141,62 @@ class _ProfileState extends State<Profile> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 20, horizontal: 20),
-                                  child: TextFormField(
-                                    controller: address,
-                                    style: TextStyle(fontSize: w * 0.04),
-                                    maxLines: 3,
-                                    decoration: InputDecoration(
-                                        alignLabelWithHint: true,
-                                        labelText: "Address",
-                                        hintText: "Enter your current address",
-                                        labelStyle:
-                                            TextStyle(fontSize: w * 0.04),
-                                        hintStyle:
-                                            TextStyle(fontSize: w * 0.04),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 18),
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 1,
-                                                color: Colors.grey.shade300),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide(width: 1),
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter your address';
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                                  child: snapshot.data!.address == "" || isEditing
+                                      ? TextFormField(
+                                          controller: address,
+                                          style: TextStyle(fontSize: w * 0.04),
+                                          maxLines: 3,
+                                          decoration: InputDecoration(
+                                              alignLabelWithHint: true,
+                                              labelText: "Address",
+                                              hintText:
+                                                  "Enter your current address",
+                                              labelStyle:
+                                                  TextStyle(fontSize: w * 0.04),
+                                              hintStyle:
+                                                  TextStyle(fontSize: w * 0.04),
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 18),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      width: 1,
+                                                      color:
+                                                          Colors.grey.shade300),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              border: OutlineInputBorder(
+                                                  borderSide:
+                                                      BorderSide(width: 1),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10))),
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter your address';
+                                            }
+                                            return null;
+                                          },
+                                        )
+                                      : Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text.rich(
+                                            TextSpan(children: [
+                                              TextSpan(
+                                                  text:
+                                                      "Address : ".toString()),
+                                              TextSpan(
+                                                  text: snapshot
+                                                      .data!.address.capitalize
+                                                      .toString()),
+                                            ]),
+                                            style: TextStyle(
+                                                fontSize: w * 0.045,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
                                 ),
                               ],
                             ),
@@ -179,26 +206,43 @@ class _ProfileState extends State<Profile> {
                               child: InkWell(
                                 onTap: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    final user = UserModel(
-                                        name: snapshot.data!.name,
-                                        email: snapshot.data!.email,
-                                        phone: snapshot.data!.phone,
-                                        password: snapshot.data!.password,
-                                        image: snapshot.data!.image,
-                                        terms: snapshot.data!.terms,
-                                        address: address.text);
-                                    await userController.updateUser(user);
+                                    if (isEditing ||
+                                        snapshot.data!.address == "") {
+                                      final user = UserModel(
+                                          name: snapshot.data!.name,
+                                          email: snapshot.data!.email,
+                                          phone: snapshot.data!.phone,
+                                          password: snapshot.data!.password,
+                                          image: snapshot.data!.image,
+                                          terms: snapshot.data!.terms,
+                                          address: address.text);
+                                      await userController.updateUser(user);
+                                      if(isEditing){
+                                        setState(() {
+                                        isEditing = false;
+                                      });
+                                      }
+                                    } else if (!isEditing) {
+                                      setState(() {
+                                        isEditing = true;
+                                      });
+                                    }
                                   }
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 20),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
-                                    color: color.black,
+                                    color: isEditing ||
+                                            snapshot.data!.address == ""
+                                        ? color.black
+                                        : color.primary,
                                   ),
                                   child: Center(
                                     child: Text(
-                                      "Submit",
+                                      isEditing || snapshot.data!.address == ""
+                                          ? "Submit"
+                                          : "Edit",
                                       style: TextStyle(
                                           fontSize: w * 0.045,
                                           fontWeight: FontWeight.w500,

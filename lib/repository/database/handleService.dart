@@ -37,7 +37,7 @@ class HandleService extends GetxController {
           .collection("users")
           .doc(FirebaseAuth.instance.currentUser!.email)
           .collection("services")
-          .orderBy("status", descending: true)
+          .orderBy("serviceStatus", descending: true)
           .snapshots()
           .map((event) =>
               event.docs.map((e) => ServiceModel.fromSnapshot(e)).toList());
