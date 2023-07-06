@@ -3,17 +3,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ServiceModel {
   final String? id;
   final String appliance;
-  final String charge;
   final String model;
   final String paymentStatus;
   final String problem;
   final String serviceStatus;
+  final int repairCharge;
+  final int serviceCharge;
+  final int setupCharge;
+  final int deliveryCharge;
   final Timestamp time;
 
   const ServiceModel({
     this.id,
     required this.appliance,
-    required this.charge,
+    required this.repairCharge,
+    required this.setupCharge,
+    required this.serviceCharge,
+    required this.deliveryCharge,
     required this.model,
     required this.paymentStatus,
     required this.problem,
@@ -24,7 +30,10 @@ class ServiceModel {
   toJson() {
     return {
       "appliance": appliance,
-      "charge": charge,
+      "deliveryCharge": deliveryCharge,
+      "serviceCharge": serviceCharge,
+      "repairCharge": repairCharge,
+      "setupCharge": setupCharge,
       "model": model,
       "paymentStatus": paymentStatus,
       "problem": problem,
@@ -39,7 +48,10 @@ class ServiceModel {
     return ServiceModel(
       id: document.id,
       appliance: data["appliance"],
-      charge: data["charge"],
+      repairCharge: data["repairCharge"],
+      setupCharge: data["setupCharge"],
+      serviceCharge: data["serviceCharge"],
+      deliveryCharge: data["deliveryCharge"],
       model: data["model"],
       paymentStatus: data["paymentStatus"],
       problem: data["problem"],

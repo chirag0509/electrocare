@@ -37,10 +37,27 @@ class HandleService extends GetxController {
           .collection("users")
           .doc(FirebaseAuth.instance.currentUser!.email)
           .collection("services")
+<<<<<<< HEAD
+          .orderBy('time', descending: true)
+=======
           .orderBy("serviceStatus", descending: true)
+>>>>>>> 1f2f7913c376bb97c390e21e149e24e09f4776e3
           .snapshots()
           .map((event) =>
               event.docs.map((e) => ServiceModel.fromSnapshot(e)).toList());
+    }
+  }
+
+  Future<void> updateService(ServiceModel service) async {
+    try {
+      await _db
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.email)
+          .collection("services")
+          .doc(service.id)
+          .update(service.toJson());
+    } catch (e) {
+      print(e);
     }
   }
 }
