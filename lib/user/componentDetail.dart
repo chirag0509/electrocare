@@ -253,8 +253,11 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                             model: model.text,
                                             problem: problem.text,
                                             serviceStatus: "pending",
-                                            charge: "",
-                                            paymentStatus: "",
+                                            deliveryCharge: 0,
+                                            serviceCharge: 0,
+                                            setupCharge: 0,
+                                            repairCharge: 0,
+                                            paymentStatus: "pending",
                                             time: Timestamp.now(),
                                           );
                                           await serviceController
@@ -337,7 +340,7 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                 Padding(
                                   padding: const EdgeInsets.all(15),
                                   child: Text(
-                                    "${widget.component.mrc} ₹",
+                                    "₹ ${widget.component.mrc}",
                                     style: TextStyle(
                                         fontSize: w * 0.035,
                                         fontWeight: FontWeight.bold),
@@ -355,7 +358,7 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(15),
-                                  child: Text("${widget.component.msc} ₹",
+                                  child: Text("₹ ${widget.component.msc}",
                                       style: TextStyle(
                                           fontSize: w * 0.035,
                                           fontWeight: FontWeight.bold)),
@@ -372,7 +375,7 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(15),
-                                  child: Text("${widget.component.sc} ₹",
+                                  child: Text("₹ ${widget.component.sc}",
                                       style: TextStyle(
                                           fontSize: w * 0.035,
                                           fontWeight: FontWeight.bold)),
@@ -389,7 +392,7 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(15),
-                                  child: Text("${widget.component.dc} ₹",
+                                  child: Text("₹ ${widget.component.dc}",
                                       style: TextStyle(
                                           fontSize: w * 0.035,
                                           fontWeight: FontWeight.bold)),
