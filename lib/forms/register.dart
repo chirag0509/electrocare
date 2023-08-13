@@ -174,7 +174,7 @@ class _RegisterState extends State<Register> {
                                     showPsk = !showPsk;
                                   });
                                 },
-                                icon: Icon(Icons.visibility_off_outlined))
+                                icon: Icon(Icons.visibility_outlined))
                             : IconButton(
                                 splashColor: Colors.transparent,
                                 onPressed: () {
@@ -182,7 +182,7 @@ class _RegisterState extends State<Register> {
                                     showPsk = !showPsk;
                                   });
                                 },
-                                icon: Icon(Icons.visibility_outlined)),
+                                icon: Icon(Icons.visibility_off_outlined)),
                         labelText: "Password",
                         hintText: "Enter a strong password",
                         labelStyle: TextStyle(fontSize: w * 0.045),

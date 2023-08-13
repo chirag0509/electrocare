@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electrocare/components/drawer.dart';
 import 'package:electrocare/forms/forgetPsk.dart';
 import 'package:electrocare/forms/login.dart';
@@ -20,6 +21,7 @@ import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'forms/phone.dart';
 import 'menu/about.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,10 +35,56 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final color = ColorController.instance;
+
+  void initState() {
+    checkOffer();
+    super.initState();
+  }
+
+  void checkOffer() async {
+    final offerDocs =
+        await FirebaseFirestore.instance.collection("offers").get();
+    final currentTimestamp = Timestamp.now();
+    if (offerDocs.docs.isNotEmpty) {
+      for (var i in offerDocs.docs) {
+        Timestamp offerTimestamp = i["valid"];
+        if (offerTimestamp.compareTo(currentTimestamp) < 0) {
+          deleteOffer(i.id, i["image"]);
+        }
+      }
+    }
+  }
+
+  Future<void> deleteOffer(String offerId, String imageUrl) async {
+    try {
+      // Delete from Firestore collection
+      await FirebaseFirestore.instance
+          .collection('offers')
+          .doc(offerId)
+          .delete();
+
+      // Delete from Firebase Storage
+      if (imageUrl.isNotEmpty) {
+        final Reference storageRef =
+            FirebaseStorage.instance.refFromURL(imageUrl);
+        await storageRef.delete();
+      }
+
+      // Show a success message or perform any other necessary actions
+    } catch (error) {
+      // Handle errors
+      print("Error deleting Offer: $error");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

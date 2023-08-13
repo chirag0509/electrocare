@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electrocare/repository/controller/colorController.dart';
 import 'package:electrocare/repository/database/handleService.dart';
+import 'package:electrocare/repository/models/feedbackModel.dart';
 import 'package:electrocare/repository/models/serviceModel.dart';
 import 'package:electrocare/user/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import '../repository/authentication/auth.dart';
 
 class Services extends StatefulWidget {
   const Services({super.key});
@@ -83,6 +86,7 @@ class _ServicesState extends State<Services> {
                       onTap: () {
                         setState(() {
                           newStatus = title[index];
+                         
                         });
                       },
                       child: Container(
@@ -127,7 +131,21 @@ class _ServicesState extends State<Services> {
                               onTap: () async {
                                 final service = await ServiceModel(
                                     id: snapshot.data![index].id,
+                                    client: snapshot.data![index].client,
+                                    clientPhone:
+                                        snapshot.data![index].clientPhone,
+                                    clientAddress:
+                                        snapshot.data![index].clientAddress,
+                                    executive: snapshot.data![index].executive,
+                                    executiveID:
+                                        snapshot.data![index].executiveID,
                                     appliance: snapshot.data![index].appliance,
+                                    model: snapshot.data![index].model,
+                                    problem: snapshot.data![index].problem,
+                                    paymentStatus:
+                                        snapshot.data![index].paymentStatus,
+                                    serviceStatus:
+                                        snapshot.data![index].serviceStatus,
                                     repairCharge:
                                         snapshot.data![index].repairCharge,
                                     serviceCharge:
@@ -136,12 +154,6 @@ class _ServicesState extends State<Services> {
                                         snapshot.data![index].setupCharge,
                                     deliveryCharge:
                                         snapshot.data![index].deliveryCharge,
-                                    model: snapshot.data![index].model,
-                                    paymentStatus:
-                                        snapshot.data![index].paymentStatus,
-                                    problem: snapshot.data![index].problem,
-                                    serviceStatus:
-                                        snapshot.data![index].serviceStatus,
                                     time: snapshot.data![index].time);
                                 await Get.to(() => Payment(service: service));
                               },
@@ -150,79 +162,127 @@ class _ServicesState extends State<Services> {
                                   color: color.secondary,
                                   borderRadius: BorderRadius.circular(15),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                child: Column(
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 20, left: 20, bottom: 10),
-                                          child: Text(
-                                            snapshot.data![index].model
-                                                .toUpperCase(),
-                                            style: TextStyle(
-                                                fontSize: w * 0.04,
-                                                fontWeight: FontWeight.w500),
-                                          ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 20,
+                                                  left: 20,
+                                                  bottom: 10),
+                                              child: Text(
+                                                snapshot.data![index].model
+                                                    .toUpperCase(),
+                                                style: TextStyle(
+                                                    fontSize: w * 0.04,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20, bottom: 20),
+                                              child: Text(
+                                                snapshot.data![index].appliance
+                                                    .capitalize
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontSize: w * 0.035,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.grey),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 20, bottom: 20),
-                                          child: Text(
-                                            snapshot.data![index].appliance
-                                                .capitalize
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontSize: w * 0.035,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.grey),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 20, right: 20, bottom: 10),
-                                          child: snapshot.data![index]
-                                                      .serviceStatus ==
-                                                  "pending"
-                                              ? Icon(
-                                                  Icons.pending_actions,
-                                                  color: Colors.orange,
-                                                )
-                                              : snapshot.data![index]
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 20,
+                                                  right: 20,
+                                                  bottom: 10),
+                                              child: snapshot.data![index]
                                                           .serviceStatus ==
-                                                      "in process"
+                                                      "pending"
                                                   ? Icon(
-                                                      Icons.timelapse_outlined,
-                                                      color: color.primary,
+                                                      Icons.pending_actions,
+                                                      color: Colors.orange,
                                                     )
-                                                  : Icon(Icons.done,
-                                                      color: Colors.green),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 20, bottom: 20),
-                                          child: Text(
-                                            formattedDate +
-                                                " | " +
-                                                formattedTime,
-                                            style: TextStyle(
-                                                fontSize: w * 0.035,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.grey),
-                                          ),
+                                                  : snapshot.data![index]
+                                                              .serviceStatus ==
+                                                          "in process"
+                                                      ? Icon(
+                                                          Icons
+                                                              .timelapse_outlined,
+                                                          color: color.primary,
+                                                        )
+                                                      : Icon(Icons.done,
+                                                          color: Colors.green),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 20, bottom: 20),
+                                              child: Text(
+                                                formattedDate +
+                                                    " | " +
+                                                    formattedTime,
+                                                style: TextStyle(
+                                                    fontSize: w * 0.035,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.grey),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
+                                    if (snapshot.data![index].serviceStatus ==
+                                        "completed")
+                                      StreamBuilder(
+                                        stream: FirebaseFirestore.instance
+                                            .collection("feedbacks")
+                                            .snapshots()
+                                            .map((event) => event.docs
+                                                .map((e) =>
+                                                    FeedbackModel.fromSnapshot(
+                                                        e))
+                                                .where((element) =>
+                                                    element.transactionID ==
+                                                    snapshot.data![index].id!
+                                                        .substring(0, 10))
+                                                .toList()),
+                                        builder: (context, feedSnap) {
+                                          if (feedSnap.hasData) {
+                                            if (feedSnap.data!.length == 0) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 20),
+                                                child: Text(
+                                                  "Please rate your experience with us",
+                                                  style: TextStyle(
+                                                      fontSize: w * 0.035,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.orange),
+                                                ),
+                                              );
+                                            } else {
+                                              return SizedBox();
+                                            }
+                                          } else {
+                                            return SizedBox();
+                                          }
+                                        },
+                                      ),
                                   ],
                                 ),
                               ),

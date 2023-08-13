@@ -141,9 +141,9 @@ class _DashboardState extends State<Dashboard> {
                                               final component = ComponentModel(
                                                   id: id,
                                                   category: compCategory,
-                                                  popular: popular,
+                                                
                                                   image: image,
-                                                  rating: rating,
+                                                
                                                   mrc: mrc,
                                                   msc: msc,
                                                   sc: sc,
@@ -221,18 +221,12 @@ class _DashboardState extends State<Dashboard> {
                                                               category: filteredData[
                                                                       index]
                                                                   .category,
-                                                              popular:
-                                                                  filteredData[
-                                                                          index]
-                                                                      .popular,
+                                                             
                                                               image:
                                                                   filteredData[
                                                                           index]
                                                                       .image,
-                                                              rating:
-                                                                  filteredData[
-                                                                          index]
-                                                                      .rating,
+                                                             
                                                               mrc: filteredData[
                                                                       index]
                                                                   .mrc,
@@ -564,7 +558,7 @@ class _DashboardState extends State<Dashboard> {
                                   }
                                 },
                               ),
-                              StreamBuilder<List<ComponentModel>>(
+                              StreamBuilder<List>(
                                 stream:
                                     categoryController.getComponents(category),
                                 builder: (context, snapshot) {
@@ -583,12 +577,10 @@ class _DashboardState extends State<Dashboard> {
                                                   id: snapshot.data![index].id,
                                                   category: snapshot
                                                       .data![index].category,
-                                                  popular: snapshot
-                                                      .data![index].popular,
+                                                
                                                   image: snapshot
                                                       .data![index].image,
-                                                  rating: snapshot
-                                                      .data![index].rating,
+                                               
                                                   mrc:
                                                       snapshot.data![index].mrc,
                                                   msc:

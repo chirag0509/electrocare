@@ -4,8 +4,6 @@ class ComponentModel {
   final String id;
   final String image;
   final String category;
-  final String popular;
-  final int rating;
   final String mrc;
   final String msc;
   final String sc;
@@ -14,9 +12,7 @@ class ComponentModel {
   const ComponentModel({
     required this.id,
     required this.category,
-    required this.popular,
     required this.image,
-    required this.rating,
     required this.mrc,
     required this.msc,
     required this.sc,
@@ -26,9 +22,7 @@ class ComponentModel {
   toJson() {
     return {
       "category": category,
-      "popular": popular,
       "image": image,
-      "rating": rating,
       "mrc": mrc,
       "msc": msc,
       "sc": sc,
@@ -42,9 +36,7 @@ class ComponentModel {
     return ComponentModel(
       id: document.id,
       category: data["category"],
-      popular: data["popular"],
       image: data["image"],
-      rating: data["rating"],
       mrc: data["mrc"],
       msc: data["msc"],
       sc: data["sc"],

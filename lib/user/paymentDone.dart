@@ -16,9 +16,6 @@ class _PaymentDoneState extends State<PaymentDone>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
-  double _rating = 0.0;
-  final TextEditingController msgEditingController = TextEditingController();
-  bool isEnabled = false;
 
   void initState() {
     super.initState();
@@ -27,7 +24,7 @@ class _PaymentDoneState extends State<PaymentDone>
       duration: const Duration(seconds: 3),
     );
     _controller.forward().whenComplete(() {
-      Get.to(() => Services());
+      Navigator.pop(context);
     });
   }
 

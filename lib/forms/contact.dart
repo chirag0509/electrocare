@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electrocare/repository/controller/formController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../repository/controller/colorController.dart';
 
 class Contact extends StatefulWidget {
@@ -161,7 +163,30 @@ class _ContactState extends State<Contact> {
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   child: InkWell(
                     onTap: () async {
-                      if (_formKey.currentState!.validate()) {}
+                      if (_formKey.currentState!.validate()) {
+                        await FirebaseFirestore.instance
+                            .collection("support")
+                            .add({
+                          "name": fi.name.text,
+                          "email": fi.email.text,
+                          "subject": fi.subject.text,
+                          "message": fi.message.text,
+                          "time": Timestamp.now()
+                        });
+                        Get.showSnackbar(
+                          GetSnackBar(
+                            message: "Problem registered successfully.",
+                            duration: Duration(seconds: 2),
+                            backgroundColor: Color.fromARGB(255, 35, 35, 35),
+                          ),
+                        );
+                        setState(() {
+                          fi.name.clear();
+                          fi.email.clear();
+                          fi.subject.clear();
+                          fi.message.clear();
+                        });
+                      }
                     },
                     child: Container(
                       width: double.infinity,

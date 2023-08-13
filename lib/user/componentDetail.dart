@@ -7,6 +7,7 @@ import 'package:electrocare/repository/models/componentModel.dart';
 import 'package:electrocare/repository/models/serviceModel.dart';
 import 'package:electrocare/repository/models/userModel.dart';
 import 'package:electrocare/user/profile.dart';
+import 'package:electrocare/user/reviews.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -34,6 +35,27 @@ class _ComponentDetailState extends State<ComponentDetail> {
   final serviceController = Get.put(HandleService());
   final userController = Get.put(HandleUser());
 
+  Stream<double> averageRatings() {
+    return FirebaseFirestore.instance
+        .collection('feedbacks')
+        .where('appliance', isEqualTo: widget.component.id)
+        .snapshots()
+        .map((snapshot) {
+      List<int> ratings =
+          snapshot.docs.map((doc) => doc['rating'] as int).toList();
+
+      if (ratings.isEmpty) {
+        // Handle case where there are no ratings
+        return 0.0;
+      }
+
+      double averageRating =
+          ratings.reduce((a, b) => a + b) / ratings.length.toDouble();
+
+      return averageRating;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
@@ -57,7 +79,6 @@ class _ComponentDetailState extends State<ComponentDetail> {
           children: [
             Container(
                 width: w * 1,
-                height: h * 0.45,
                 color: color.secondary,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,37 +100,42 @@ class _ComponentDetailState extends State<ComponentDetail> {
                         height: w * 0.56,
                         child: CachedNetworkImage(
                             imageUrl: widget.component.image)),
-                    SizedBox(
-                      height: 40,
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                      ),
+                          horizontal: 20, vertical: 40),
                       child: Align(
                         alignment: Alignment.bottomLeft,
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: color.white,
-                          ),
-                          child: RatingBar.builder(
-                            initialRating: widget.component.rating.toDouble(),
-                            minRating: 1,
-                            maxRating: 5,
-                            itemSize: 20,
-                            ignoreGestures: true,
-                            direction: Axis.horizontal,
-                            allowHalfRating: false,
-                            unratedColor: Colors.grey.shade300,
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.yellow.shade800,
-                            ),
-                            onRatingUpdate: (rating) {},
-                          ),
+                        child: StreamBuilder<double>(
+                          stream: averageRatings(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Colors.white,
+                                ),
+                                child: RatingBar.builder(
+                                  initialRating: snapshot.data!,
+                                  minRating: 1,
+                                  maxRating: 5,
+                                  itemSize: 20,
+                                  ignoreGestures: true,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  unratedColor: Colors.grey.shade300,
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    color: Colors.yellow.shade800,
+                                  ),
+                                  onRatingUpdate: (rating) {},
+                                ),
+                              );
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
                         ),
                       ),
                     ),
@@ -120,18 +146,23 @@ class _ComponentDetailState extends State<ComponentDetail> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                  child: Container(
-                    width: w * 0.7,
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: color.secondary,
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Reviews",
-                        style: TextStyle(
-                            fontSize: w * 0.04, fontWeight: FontWeight.w500),
+                  child: InkWell(
+                    onTap: () {
+                      Get.to(() => Reviews(appliance: widget.component.id));
+                    },
+                    child: Container(
+                      width: w * 0.7,
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: color.secondary,
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Reviews",
+                          style: TextStyle(
+                              fontSize: w * 0.04, fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ),
                   ),
@@ -245,19 +276,23 @@ class _ComponentDetailState extends State<ComponentDetail> {
                                   child: InkWell(
                                     onTap: () async {
                                       if (_formKey.currentState!.validate()) {
-                                        if (snapshot.data!.address != "" &&
-                                            FirebaseAuth.instance.currentUser!
-                                                .emailVerified) {
+                                        if (snapshot.data!.address != "") {
                                           final service = ServiceModel(
+                                            client: snapshot.data!.name,
+                                            clientPhone: snapshot.data!.phone,
+                                            clientAddress:
+                                                snapshot.data!.address,
+                                            executive: "not assigned",
+                                            executiveID: "not assigned",
                                             appliance: widget.component.id,
                                             model: model.text,
                                             problem: problem.text,
-                                            serviceStatus: "pending",
-                                            deliveryCharge: 0,
+                                            repairCharge: 0,
                                             serviceCharge: 0,
                                             setupCharge: 0,
-                                            repairCharge: 0,
+                                            deliveryCharge: 0,
                                             paymentStatus: "pending",
+                                            serviceStatus: "pending",
                                             time: Timestamp.now(),
                                           );
                                           await serviceController

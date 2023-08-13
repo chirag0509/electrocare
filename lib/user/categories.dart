@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electrocare/components/drawer.dart';
 import 'package:electrocare/repository/controller/colorController.dart';
 import 'package:electrocare/repository/database/handleCategories.dart';
@@ -167,6 +168,30 @@ class _CategoriesState extends State<Categories> {
                           shrinkWrap: true,
                           itemCount: filteredData.length,
                           itemBuilder: (context, index) {
+                            Stream<double> averageRatings() {
+                              return FirebaseFirestore.instance
+                                  .collection('feedbacks')
+                                  .where('appliance',
+                                      isEqualTo: filteredData[index].id)
+                                  .snapshots()
+                                  .map((snapshot) {
+                                List<int> ratings = snapshot.docs
+                                    .map((doc) => doc['rating'] as int)
+                                    .toList();
+
+                                if (ratings.isEmpty) {
+                                  // Handle case where there are no ratings
+                                  return 0.0;
+                                }
+
+                                double averageRating =
+                                    ratings.reduce((a, b) => a + b) /
+                                        ratings.length.toDouble();
+
+                                return averageRating;
+                              });
+                            }
+
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 8, horizontal: 20),
@@ -175,9 +200,7 @@ class _CategoriesState extends State<Categories> {
                                   final component = ComponentModel(
                                     id: filteredData[index].id,
                                     category: filteredData[index].category,
-                                    popular: filteredData[index].popular,
                                     image: filteredData[index].image,
-                                    rating: filteredData[index].rating,
                                     mrc: filteredData[index].mrc,
                                     msc: filteredData[index].msc,
                                     sc: filteredData[index].sc,
@@ -246,25 +269,54 @@ class _CategoriesState extends State<Categories> {
                                               SizedBox(
                                                 height: 10,
                                               ),
-                                              RatingBar.builder(
-                                                initialRating:
-                                                    filteredData[index]
-                                                        .rating
-                                                        .toDouble(),
-                                                minRating: 1,
-                                                maxRating: 5,
-                                                itemSize: 20,
-                                                ignoreGestures: true,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: false,
-                                                unratedColor:
-                                                    Colors.grey.shade300,
-                                                itemBuilder: (context, _) =>
-                                                    Icon(
-                                                  Icons.star,
-                                                  color: Colors.yellow.shade800,
-                                                ),
-                                                onRatingUpdate: (rating) {},
+                                              StreamBuilder<double>(
+                                                stream: averageRatings(),
+                                                builder: (context, ratingSnap) {
+                                                  if (ratingSnap.hasData) {
+                                                    return RatingBar.builder(
+                                                      initialRating:
+                                                          ratingSnap.data!,
+                                                      minRating: 1,
+                                                      maxRating: 5,
+                                                      itemSize: 20,
+                                                      ignoreGestures: true,
+                                                      direction:
+                                                          Axis.horizontal,
+                                                      allowHalfRating: true,
+                                                      unratedColor:
+                                                          Colors.grey.shade300,
+                                                      itemBuilder:
+                                                          (context, _) => Icon(
+                                                        Icons.star,
+                                                        color: Colors
+                                                            .yellow.shade800,
+                                                      ),
+                                                      onRatingUpdate:
+                                                          (rating) {},
+                                                    );
+                                                  } else {
+                                                    return RatingBar.builder(
+                                                      initialRating: 0,
+                                                      minRating: 1,
+                                                      maxRating: 5,
+                                                      itemSize: 20,
+                                                      ignoreGestures: true,
+                                                      direction:
+                                                          Axis.horizontal,
+                                                      allowHalfRating: true,
+                                                      unratedColor:
+                                                          Colors.grey.shade300,
+                                                      itemBuilder:
+                                                          (context, _) => Icon(
+                                                        Icons.star,
+                                                        color: Colors
+                                                            .yellow.shade800,
+                                                      ),
+                                                      onRatingUpdate:
+                                                          (rating) {},
+                                                    );
+                                                  }
+                                                },
                                               ),
                                             ],
                                           ),
@@ -295,14 +347,36 @@ class _CategoriesState extends State<Categories> {
                             ),
                             itemCount: filteredData.length,
                             itemBuilder: (context, index) {
+                              Stream<double> averageRatings() {
+                                return FirebaseFirestore.instance
+                                    .collection('feedbacks')
+                                    .where('appliance',
+                                        isEqualTo: filteredData[index].id)
+                                    .snapshots()
+                                    .map((snapshot) {
+                                  List<int> ratings = snapshot.docs
+                                      .map((doc) => doc['rating'] as int)
+                                      .toList();
+
+                                  if (ratings.isEmpty) {
+                                    // Handle case where there are no ratings
+                                    return 0.0;
+                                  }
+
+                                  double averageRating =
+                                      ratings.reduce((a, b) => a + b) /
+                                          ratings.length.toDouble();
+
+                                  return averageRating;
+                                });
+                              }
+
                               return InkWell(
                                 onTap: () {
                                   final component = ComponentModel(
                                     id: filteredData[index].id,
                                     category: filteredData[index].category,
-                                    popular: filteredData[index].popular,
                                     image: filteredData[index].image,
-                                    rating: filteredData[index].rating,
                                     mrc: filteredData[index].mrc,
                                     msc: filteredData[index].msc,
                                     sc: filteredData[index].sc,
@@ -359,22 +433,45 @@ class _CategoriesState extends State<Categories> {
                                       SizedBox(
                                         height: 10,
                                       ),
-                                      RatingBar.builder(
-                                        initialRating: filteredData[index]
-                                            .rating
-                                            .toDouble(),
-                                        minRating: 1,
-                                        maxRating: 5,
-                                        itemSize: 20,
-                                        ignoreGestures: true,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: false,
-                                        unratedColor: Colors.grey.shade300,
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.yellow.shade800,
-                                        ),
-                                        onRatingUpdate: (rating) {},
+                                      StreamBuilder<double>(
+                                        stream: averageRatings(),
+                                        builder: (context, ratingSnap) {
+                                          if (ratingSnap.hasData) {
+                                            return RatingBar.builder(
+                                              initialRating: ratingSnap.data!,
+                                              minRating: 1,
+                                              maxRating: 5,
+                                              itemSize: 20,
+                                              ignoreGestures: true,
+                                              direction: Axis.horizontal,
+                                              allowHalfRating: true,
+                                              unratedColor:
+                                                  Colors.grey.shade300,
+                                              itemBuilder: (context, _) => Icon(
+                                                Icons.star,
+                                                color: Colors.yellow.shade800,
+                                              ),
+                                              onRatingUpdate: (rating) {},
+                                            );
+                                          } else {
+                                            return RatingBar.builder(
+                                              initialRating: 0,
+                                              minRating: 1,
+                                              maxRating: 5,
+                                              itemSize: 20,
+                                              ignoreGestures: true,
+                                              direction: Axis.horizontal,
+                                              allowHalfRating: true,
+                                              unratedColor:
+                                                  Colors.grey.shade300,
+                                              itemBuilder: (context, _) => Icon(
+                                                Icons.star,
+                                                color: Colors.yellow.shade800,
+                                              ),
+                                              onRatingUpdate: (rating) {},
+                                            );
+                                          }
+                                        },
                                       ),
                                     ],
                                   ),
