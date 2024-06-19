@@ -57,7 +57,7 @@ class TransactionController extends GetxController {
     try {
       QuerySnapshot snapshot = await _db
           .collection("users")
-          .where(SharedPreferencesHelper.getEmail())
+          .where("email", isEqualTo: SharedPreferencesHelper.getEmail())
           .get();
 
       DocumentSnapshot documentSnapshot = snapshot.docs.first;
